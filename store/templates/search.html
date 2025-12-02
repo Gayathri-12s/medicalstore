@@ -1,0 +1,20 @@
+{% extends 'layout/app-layout.html' %}
+{% block content %}
+
+<h2>Search</h2>
+
+<form method="GET">
+    <input type="text" name="q" value="{{ query }}">
+    <button type="submit">Search</button>
+</form>
+{% if results %}
+    {% for med in results %}
+           <p>{{ med.name }} ({{ med.available_stock }})</p>
+    {% endfor %}
+{% else %}
+    <p>No results.</p>
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

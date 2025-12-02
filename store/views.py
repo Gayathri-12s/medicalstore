@@ -1,5 +1,5 @@
 
-from django.contrib.auth.decorators import UserCreationForm
+from django.contrib.auth.forms  import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -10,15 +10,20 @@ from .models import Medicine
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect 
 
-def signup_page(reuest):
-    if reuest.method == 'POST':
-        form = UserCreationForm(reuest.POST)
+
+
+def home(request):
+    return render(request, 'home.html')
+
+def signup_page(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
     else:
         form = UserCreationForm()
-    return render(reuest, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
 
 def login_page(request):
