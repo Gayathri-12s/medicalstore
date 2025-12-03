@@ -6,7 +6,25 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+    {{ form.username.label_tag }}
+    {{ form.username }}
+</p>
+
+<p>
+    {{ form.password1.label_tag }}
+    {{ form.password1 }} 
+</p>
+
+<p>
+    {{ form.password2.label_tag }}
+    {{ form.password2 }}
+</p>
+
+{% if form.errors %}
+    <p style="color:red;">{{ form.errors }}</p>
+{% endif %}
+
         <button type="submit">Create Account</button>
     </form>
 

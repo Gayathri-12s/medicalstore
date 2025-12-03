@@ -13,6 +13,8 @@ from django.shortcuts import render, redirect
 
 
 def home(request):
+    if not request.user.is_authenticated:
+        return redirect('signup')
     return render(request, 'home.html')
 
 def signup_page(request):
@@ -20,7 +22,7 @@ def signup_page(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('home')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -28,12 +30,12 @@ def signup_page(request):
 
 def login_page(request):
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
             return redirect('home')
         
-        else:
+    else:
             form = AuthenticationForm()
             
     return render(request, 'login.html', {'form': form})
@@ -115,10 +117,11 @@ def listing(request):
 
 
 def search_medicine(request):
+    results = []
     if request.method == 'POST':
         search_term = request.POST.get('search_term', '')
         results = Medicine.objects.filter(
-            username = request.user.username,
+            user = request.user,
             name__icontains=search_term,)
             
     

@@ -4,7 +4,7 @@
 
     <p>logged in {{request.user.username}}</p>
 
-    <form method="post">
+    <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Create Account</button>

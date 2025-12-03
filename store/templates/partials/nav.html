@@ -1,0 +1,18 @@
+   <div>
+        <a href="{% url 'home' %}" style="color:white; margin-right:20px; text-decoration:none;">Home</a>
+        <a href="{% url 'add_medicine' %}" style="color:white; margin-right:20px; text-decoration:none;">Add Medicine</a>
+        <a href="{% url 'list_medicine' %}" style="color:white; margin-right:20px; text-decoration:none;">My Medicines</a>
+        <a href="{% url 'search_medicine' %}" style="color:white; margin-right:20px; text-decoration:none;">Search</a>
+    </div>
+
+    <div>
+        {% if request.user.is_authenticated %}
+            <span style="margin-right:15px;">Welcome, {{ request.user.username }}</span>
+            <a href="{% url 'logout' %}" style="color:white; text-decoration:none;">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" style="color:white; margin-right:20px; text-decoration:none;">Login</a>
+            <a href="{% url 'signup' %}" style="color:white; text-decoration:none;">Signup</a>
+        {% endif %}
+    </div>
+
+</nav>
