@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.http import HttpResponse
+
 from .forms import MedicineForm
 from .models import Medicine
 from django.core.paginator import Paginator
@@ -22,7 +22,7 @@ def signup_page(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -33,7 +33,7 @@ def login_page(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('home')
+            return redirect('retrieveproduct')
         
     else:
             form = AuthenticationForm()
@@ -53,8 +53,10 @@ def logout_page(request):
 @login_required(login_url='/login/')
 def create_medicine(request):
     if Medicine.objects.filter(user=request.user).count() >= 5:
-        return HttpResponse("You cannot add more than 5 medicines.")
-   
+        return render(request, 'create.html', {
+            'error': "You cannot add more than 5 medicines.",
+            'form': MedicineForm()
+        })
     
     if request.method == 'POST':
         form = MedicineForm(request.POST)
@@ -63,17 +65,20 @@ def create_medicine(request):
             medicine.user = request.user
             medicine.save()
             return redirect('retrieveproduct')
-        
     else:
-            form = MedicineForm()
-            
-    return render(request, 'create.html', {'form': form})
+        form = MedicineForm()
         
+    return render(request, 'create.html', {'form': form})
         
 @login_required(login_url='/login/')
 def retrieve_medicine(request):
     product_list = Medicine.objects.filter(user=request.user).order_by('-added_time')
-    return render(request, 'retrieve.html', {'product_list': product_list})
+    paginator = Paginator(product_list, 3)  # 3 items per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'retrieve.html', {'page_obj': page_obj})
+    
 
 
 @login_required(login_url='/login/')
@@ -106,7 +111,7 @@ def delete_medicine(request, id):
 
 
 def listing(request):
-    products = Medicine.objects.filter(user=request.user)
+    products = Medicine.objects.filter(user=request.user).order_by('-added_time')
     paginator = Paginator(products, 3)
     
     page_number = request.GET.get('page')
@@ -116,18 +121,18 @@ def listing(request):
     return render(request, 'pagination.html', {'page_obj': page_obj})
 
 
+@login_required(login_url='/login/')
 def search_medicine(request):
     results = []
-    if request.method == 'POST':
-        search_term = request.POST.get('search_term', '')
+    if 'search_term' in request.GET:
+        search_term = request.GET['search_term']
         results = Medicine.objects.filter(
-            user = request.user,
-            name__icontains=search_term,)
-            
-    
-    
-    return render(request, "search.html", {"results": results })
-    
+            user=request.user,
+            name__icontains=search_term
+        )
+    return render(request, "search.html", {"results": results})
+
+
             
     
     

@@ -2,11 +2,14 @@
 {% block content %}
 
 <h2>Add Medicine</h2>
-
-<form method="POST">
+{% if error %}
+<p style="color:red">{{ error }}</p>
+{% endif %}
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Save</button>
+    <button type="submit">Add Medicine</button>
 </form>
+
 
 {% endblock %}

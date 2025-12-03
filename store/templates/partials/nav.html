@@ -1,18 +1,32 @@
-   <div>
-        <a href="{% url 'home' %}" style="color:white; margin-right:20px; text-decoration:none;">Home</a>
-        <a href="{% url 'add_medicine' %}" style="color:white; margin-right:20px; text-decoration:none;">Add Medicine</a>
-        <a href="{% url 'list_medicine' %}" style="color:white; margin-right:20px; text-decoration:none;">My Medicines</a>
-        <a href="{% url 'search_medicine' %}" style="color:white; margin-right:20px; text-decoration:none;">Search</a>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nav</title>
+</head>
+<body>
+    <nav>
+    <ul>
+     
+        <li><a href="{% url 'home' %}">Home</a></li>
 
-    <div>
         {% if request.user.is_authenticated %}
-            <span style="margin-right:15px;">Welcome, {{ request.user.username }}</span>
-            <a href="{% url 'logout' %}" style="color:white; text-decoration:none;">Logout</a>
+         
+            <li><a href="{% url 'createproduct' %}">Add Medicine</a></li>
+            <li><a href="{% url 'retrieveproduct' %}">My Medicines</a></li>
+            <li><a href="{% url 'medicine_listing' %}">Medicine Listing</a></li>
+            <li><a href="{% url 'searchmedicine' %}">Search Medicine</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li>Welcome, {{ request.user.username }}</li>
         {% else %}
-            <a href="{% url 'login' %}" style="color:white; margin-right:20px; text-decoration:none;">Login</a>
-            <a href="{% url 'signup' %}" style="color:white; text-decoration:none;">Signup</a>
+            
+            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
         {% endif %}
-    </div>
-
+    </ul>
 </nav>
+    
+</body>
+</html>
+
