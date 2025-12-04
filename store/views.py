@@ -1,4 +1,3 @@
-
 from django.contrib.auth.forms  import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -40,12 +39,11 @@ def login_page(request):
             
     return render(request, 'login.html', {'form': form})
 
-@login_required(login_url='/login/')
+
 def logout_page(request):
     
     if request.method == 'POST':
         logout(request)
-        
         return redirect('login')
     return render(request, 'logout.html')
 
@@ -73,7 +71,7 @@ def create_medicine(request):
 @login_required(login_url='/login/')
 def retrieve_medicine(request):
     product_list = Medicine.objects.filter(user=request.user).order_by('-added_time')
-    paginator = Paginator(product_list, 3)  # 3 items per page
+    paginator = Paginator(product_list, 3) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -121,22 +119,29 @@ def listing(request):
     return render(request, 'pagination.html', {'page_obj': page_obj})
 
 
+# @login_required(login_url='/login/')
+# def search_medicine(request):
+#     results = []
+#     if 'search_term' in request.GET:
+#         search_term = request.GET['search_term']
+#         results = Medicine.objects.filter(
+#             user=request.user,
+#             name__icontains=search_term
+#         )
+#     return render(request, "search.html", {"results": results})
+
 @login_required(login_url='/login/')
 def search_medicine(request):
-    results = []
-    if 'search_term' in request.GET:
-        search_term = request.GET['search_term']
+    search_term = request.GET.get('search_term', '')
+    results = None
+
+    if search_term:
         results = Medicine.objects.filter(
             user=request.user,
             name__icontains=search_term
         )
-    return render(request, "search.html", {"results": results})
 
-
-            
-    
-    
-    
-    
-    
-
+    return render(request, 'search.html', {
+        'results': results,
+        'search_term': search_term
+    })

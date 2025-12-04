@@ -2,12 +2,12 @@
 {% block content %}
     
 
-    <p>logged in {{request.user.username}}</p>
+    <p>Are you sure, {{request.user.username}} logout</p>
 
     <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Create Account</button>
+        <button type="submit">Logout</button>
     </form>
 
 

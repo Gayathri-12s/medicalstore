@@ -1,21 +1,27 @@
+
 {% extends 'layout/app-layout.html' %}
 {% block content %}
 
 <h2>Search</h2>
 
 <form method="GET">
-    <input type="text" name="search_term" placeholder="Enter medicine name">
+    <input type="text" name="search_term" value="{{ search_term }}" placeholder="Enter medicine name">
     <button type="submit">Search</button>
 </form>
 
-{% if results %}
-    <ul>
-    {% for med in results %}
-        <li>{{ med.name }} ({{ med.available_stock }})</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No results.</p>
+{% if search_term %}   {# Show only after searching #}
+
+    {% if results %}
+        <ul>
+        {% for med in results %}
+            <li>{{ med.name }} ({{ med.available_stock }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+
 {% endif %}
 
 {% endblock %}
+

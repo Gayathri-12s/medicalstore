@@ -7,24 +7,25 @@
 </head>
 <body>
     <nav>
-    <ul>
+    
      
-        <li><a href="{% url 'home' %}">Home</a></li>
+        <a href="{% url 'home' %}">Home</a>|
 
         {% if request.user.is_authenticated %}
+      
          
-            <li><a href="{% url 'createproduct' %}">Add Medicine</a></li>
-            <li><a href="{% url 'retrieveproduct' %}">My Medicines</a></li>
-            <li><a href="{% url 'medicine_listing' %}">Medicine Listing</a></li>
-            <li><a href="{% url 'searchmedicine' %}">Search Medicine</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li>Welcome, {{ request.user.username }}</li>
+            <a href="{% url 'createproduct' %}">Add Medicine</a>|
+            <a href="{% url 'retrieveproduct' %}">My Medicines</a>|
+            <a href="{% url 'medicine_listing' %}">Medicine Listing</a>|
+            <a href="{% url 'searchmedicine' %}">Search Medicine</a>|
+            <a href="{% url 'logout' %}">Logout</a>
+
         {% else %}
             
-            <li><a href="{% url 'signup' %}">Sign Up</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign Up</a>
+            <li><a href="{% url 'login' %}">Login</a>
         {% endif %}
-    </ul>
+    
 </nav>
     
 </body>
